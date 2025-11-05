@@ -11,11 +11,11 @@ export default function FeaturedArticles({ articles }: { articles: Article[] }) 
   if (!mainArticle) return null
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Main featured article */}
-      <div className="lg:col-span-2">
-        <Link href={`/articles/${mainArticle.slug}`} className="group">
-          <div className="relative aspect-[16/9] mb-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+      {/* Main featured article - The Economist Style with Centered Headline */}
+      <div className="lg:col-span-2 lg:border-r lg:border-gray-300 lg:pr-10">
+        <Link href={`/articles/${mainArticle.slug}`} className="group block">
+          <div className="relative aspect-[16/9] mb-6">
             <Image
               src={mainArticle.image || "/placeholder.svg?height=600&width=800"}
               alt={mainArticle.title}
@@ -23,52 +23,55 @@ export default function FeaturedArticles({ articles }: { articles: Article[] }) 
               className="object-cover"
               priority
             />
-          </div>
-          <div className="flex items-center gap-2 mb-2">
-            <h3 className="text-2xl md:text-3xl font-serif font-bold group-hover:text-red-700 transition-colors">
-              {mainArticle.title}
-            </h3>
-            {mainArticle.premium && (
-              <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">Premium</span>
+            {mainArticle.imageCaption && (
+              <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white text-xs px-3 py-1">
+                {mainArticle.imageCaption}
+              </div>
             )}
           </div>
-          <p className="text-gray-600 mb-2">{mainArticle.excerpt}</p>
-          <div className="flex items-center text-sm text-gray-500">
-            <span>By {mainArticle.author}</span>
-            <span className="mx-2">|</span>
-            <time dateTime={mainArticle.date}>{formatDate(mainArticle.date)}</time>
+
+          {/* Centered Headline - The Economist trademark style */}
+          <div className="text-center mb-4">
+            <div className="inline-flex items-center gap-2 mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-economist-red">
+                {mainArticle.category}
+              </span>
+              {mainArticle.premium && (
+                <span className="bg-economist-red text-white px-2 py-0.5 text-xs font-bold uppercase">Premium</span>
+              )}
+            </div>
+            <h3 className="text-2xl md:text-4xl font-serif font-bold leading-tight group-hover:text-economist-red transition-colors mb-4">
+              {mainArticle.title}
+            </h3>
+            <p className="text-base text-gray-700 leading-relaxed max-w-3xl mx-auto">{mainArticle.excerpt}</p>
+          </div>
+
+          <div className="text-center text-xs text-gray-500 uppercase tracking-wide">
+            {formatDate(mainArticle.date)}
           </div>
         </Link>
       </div>
 
-      {/* Secondary featured articles */}
-      <div className="space-y-6">
+      {/* Secondary featured articles - The Economist Style */}
+      <div className="space-y-8">
         {secondaryArticles.map((article) => (
-          <Link key={article.slug} href={`/articles/${article.slug}`} className="block group">
-            <div className="flex flex-col sm:flex-row lg:flex-col gap-4">
-              <div className="relative aspect-[4/3] sm:w-1/3 lg:w-full">
-                <Image
-                  src={article.image || "/placeholder.svg?height=300&width=400"}
-                  alt={article.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="sm:w-2/3 lg:w-full">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="text-lg font-serif font-bold group-hover:text-red-700 transition-colors">
-                    {article.title}
-                  </h3>
-                  {article.premium && (
-                    <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">
-                      Premium
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center text-sm text-gray-500">
-                  <time dateTime={article.date}>{formatDate(article.date)}</time>
-                </div>
-              </div>
+          <Link key={article.slug} href={`/articles/${article.slug}`} className="block group pb-8 border-b border-gray-300 last:border-b-0 last:pb-0">
+            <div className="mb-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-economist-red">
+                {article.category}
+              </span>
+            </div>
+            <h3 className="text-lg font-serif font-bold leading-tight mb-2 group-hover:text-economist-red transition-colors">
+              {article.title}
+            </h3>
+            <p className="text-sm text-gray-700 leading-relaxed mb-2 line-clamp-3">{article.excerpt}</p>
+            <div className="flex items-center gap-2">
+              <time className="text-xs text-gray-500 uppercase tracking-wide" dateTime={article.date}>
+                {formatDate(article.date)}
+              </time>
+              {article.premium && (
+                <span className="bg-economist-red text-white px-2 py-0.5 text-xs font-bold uppercase">Premium</span>
+              )}
             </div>
           </Link>
         ))}

@@ -19,97 +19,115 @@ export default function Header() {
   ]
 
   return (
-    <header className="border-b border-gray-200">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between py-4">
-          <div className="flex items-center">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <div className="py-4">
-                  <SheetClose asChild>
-                    <Link href="/" className="block mb-6">
-                      <h1 className="text-2xl font-serif font-bold">Kakehashi</h1>
-                    </Link>
-                  </SheetClose>
+    <header className="bg-white">
+      {/* Red Masthead - The Economist Style */}
+      <div className="bg-economist-red">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between py-3">
+            <div className="flex items-center gap-4">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="md:hidden text-white hover:bg-white/10 hover:text-white">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <div className="py-4">
+                    <SheetClose asChild>
+                      <Link href="/" className="block mb-6">
+                        <div className="bg-economist-red px-4 py-2">
+                          <h1 className="text-2xl font-bold text-white uppercase tracking-tight">Kakehashi</h1>
+                        </div>
+                      </Link>
+                    </SheetClose>
 
-                  <nav className="grid gap-4">
-                    {categories.map((category) => (
-                      <SheetClose asChild key={category.name}>
-                        <Link href={category.href} className="block py-2 text-lg hover:text-red-700 transition-colors">
-                          {category.name}
+                    <nav className="grid gap-4">
+                      {categories.map((category) => (
+                        <SheetClose asChild key={category.name}>
+                          <Link href={category.href} className="block py-2 text-lg hover:text-economist-red transition-colors">
+                            {category.name}
+                          </Link>
+                        </SheetClose>
+                      ))}
+                      <SheetClose asChild>
+                        <Link href="/about" className="block py-2 text-lg hover:text-economist-red transition-colors">
+                          About Us
                         </Link>
                       </SheetClose>
-                    ))}
-                    <SheetClose asChild>
-                      <Link href="/about" className="block py-2 text-lg hover:text-red-700 transition-colors">
-                        About Us
-                      </Link>
-                    </SheetClose>
-                    <SheetClose asChild>
-                      <Link href="/contact" className="block py-2 text-lg hover:text-red-700 transition-colors">
-                        Contact
-                      </Link>
-                    </SheetClose>
-                  </nav>
-                </div>
-              </SheetContent>
-            </Sheet>
+                      <SheetClose asChild>
+                        <Link href="/contact" className="block py-2 text-lg hover:text-economist-red transition-colors">
+                          Contact
+                        </Link>
+                      </SheetClose>
+                    </nav>
+                  </div>
+                </SheetContent>
+              </Sheet>
 
-            <Link href="/" className="flex items-center">
-              <h1 className="text-2xl font-serif font-bold hidden md:block">Kakehashi</h1>
-              <h1 className="text-2xl font-serif font-bold md:hidden">KH</h1>
-            </Link>
+              <Link href="/" className="flex items-center">
+                <h1 className="text-2xl md:text-3xl font-bold text-white uppercase tracking-tight">Kakehashi</h1>
+              </Link>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowSearch(!showSearch)}
+                className="text-white hover:bg-white/10 hover:text-white"
+              >
+                <Search className="h-5 w-5" />
+                <span className="sr-only">Search</span>
+              </Button>
+
+              <Link href="/login" className="hidden sm:block">
+                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 hover:text-white">
+                  <User className="h-5 w-5" />
+                  <span className="sr-only">Account</span>
+                </Button>
+              </Link>
+
+              <Link href="/subscribe" className="hidden sm:block">
+                <Button className="bg-white text-economist-red hover:bg-gray-100 font-bold uppercase text-xs px-4 py-2 h-auto">
+                  Subscribe
+                </Button>
+              </Link>
+            </div>
           </div>
+        </div>
+      </div>
 
-          <nav className="hidden md:flex items-center space-x-6">
+      {/* Navigation Bar */}
+      <div className="border-b border-gray-300">
+        <div className="container mx-auto px-4">
+          <nav className="hidden md:flex items-center justify-center gap-8 py-3">
             {categories.map((category) => (
               <Link
                 key={category.name}
                 href={category.href}
-                className="text-sm font-medium hover:text-red-700 transition-colors"
+                className="text-sm font-bold uppercase tracking-wide hover:text-economist-red transition-colors"
               >
                 {category.name}
               </Link>
             ))}
-            <Link href="/about" className="text-sm font-medium hover:text-red-700 transition-colors">
-              About Us
+            <Link href="/about" className="text-sm font-bold uppercase tracking-wide hover:text-economist-red transition-colors">
+              About
             </Link>
-            <Link href="/contact" className="text-sm font-medium hover:text-red-700 transition-colors">
+            <Link href="/contact" className="text-sm font-bold uppercase tracking-wide hover:text-economist-red transition-colors">
               Contact
             </Link>
           </nav>
-
-          <div className="flex items-center space-x-2">
-            <Button variant="ghost" size="icon" onClick={() => setShowSearch(!showSearch)}>
-              <Search className="h-5 w-5" />
-              <span className="sr-only">Search</span>
-            </Button>
-
-            <Link href="/login">
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-                <span className="sr-only">Account</span>
-              </Button>
-            </Link>
-
-            <Link href="/subscribe" className="hidden md:block">
-              <Button className="bg-red-700 hover:bg-red-800 text-white">Subscribe</Button>
-            </Link>
-          </div>
         </div>
+      </div>
 
-        {showSearch && (
-          <div className="py-4 border-t border-gray-200">
+      {showSearch && (
+        <div className="border-b border-gray-300">
+          <div className="container mx-auto px-4 py-4">
             <SearchForm onSearch={() => setShowSearch(false)} />
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   )
 }

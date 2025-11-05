@@ -27,87 +27,99 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="border-b border-gray-200">
+      {/* Top News Ticker - The Economist Style */}
+      <div className="border-b border-gray-300">
         <NewsMarquee articles={latestArticles} />
       </div>
 
-      {/* Top advertisement banner */}
-      <div className="container mx-auto px-4 py-4">
-        <AdvertisementBanner
-          id={topAd.id}
-          imageUrl={topAd.imageUrl}
-          altText={topAd.altText}
-          linkUrl={topAd.linkUrl}
-          position="top"
-        />
-      </div>
+      {/* Main Content - The Economist Grid Layout */}
+      <div className="container mx-auto px-4 py-6">
+        {/* Featured Section - "On The Cover" Style */}
+        <section className="mb-10 pb-10 border-b border-gray-300">
+          <div className="text-center mb-6">
+            <h2 className="text-xs font-bold uppercase tracking-wider text-economist-red mb-2">This Week</h2>
+            <h1 className="text-2xl md:text-4xl font-serif font-bold text-gray-900">Featured Stories</h1>
+          </div>
+          <FeaturedArticles articles={featuredArticles} />
+        </section>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          <div className="lg:col-span-3">
-            <section className="mb-12">
-              <h2 className="text-3xl font-serif font-bold mb-6 text-gray-900">Featured Stories</h2>
-              <FeaturedArticles articles={featuredArticles} />
-            </section>
-
-            <section className="mb-12">
-              <h2 className="text-3xl font-serif font-bold mb-6 text-gray-900">World</h2>
+        {/* Two-Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content - 2/3 width */}
+          <div className="lg:col-span-2">
+            {/* World Section */}
+            <section className="mb-10 pb-10 border-b border-gray-300">
+              <div className="mb-6">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-economist-red border-t-4 border-economist-red inline-block pt-2">
+                  World
+                </h2>
+              </div>
               <CategorySection articles={articles.filter((article) => article.category === "world")} />
             </section>
 
-            {/* In-article advertisement */}
-            <div className="mb-12">
-              <AdvertisementBanner
-                id="3"
-                imageUrl="/placeholder.svg?height=250&width=728"
-                altText="Tech Conference 2023"
-                linkUrl="https://example.com/tech-conference"
-                position="inline"
-              />
-            </div>
-
-            <section className="mb-12">
-              <h2 className="text-3xl font-serif font-bold mb-6 text-gray-900">Business</h2>
+            {/* Business Section */}
+            <section className="mb-10 pb-10 border-b border-gray-300">
+              <div className="mb-6">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-economist-red border-t-4 border-economist-red inline-block pt-2">
+                  Business
+                </h2>
+              </div>
               <CategorySection articles={articles.filter((article) => article.category === "business")} />
             </section>
 
-            <section className="mb-12">
-              <h2 className="text-3xl font-serif font-bold mb-6 text-gray-900">Technology</h2>
+            {/* Technology Section */}
+            <section className="mb-10">
+              <div className="mb-6">
+                <h2 className="text-xs font-bold uppercase tracking-wider text-economist-red border-t-4 border-economist-red inline-block pt-2">
+                  Technology
+                </h2>
+              </div>
               <CategorySection articles={articles.filter((article) => article.category === "technology")} />
             </section>
           </div>
 
-          {/* Sidebar with advertisement */}
+          {/* Sidebar - 1/3 width */}
           <div className="lg:col-span-1">
-            <div className="sticky top-4">
-              <SidebarAd ad={sidebarAd} />
-
-              <div className="bg-gray-50 p-4 rounded-lg mb-6">
-                <h3 className="font-serif font-bold mb-4">Newsletter</h3>
-                <p className="text-sm text-gray-600 mb-4">
-                  Stay updated with the latest news bridging Malaysia and Japan.
-                </p>
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    placeholder="Your email"
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm"
-                  />
-                  <button className="bg-red-700 text-white px-3 py-2 rounded-md text-sm">Subscribe</button>
-                </div>
-              </div>
-
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <h3 className="font-serif font-bold mb-4">Most Read</h3>
-                <ul className="space-y-4">
-                  {articles.slice(0, 5).map((article) => (
-                    <li key={article.id}>
-                      <a href={`/articles/${article.slug}`} className="text-sm hover:text-red-700">
+            <div className="sticky top-4 space-y-8">
+              {/* Most Read */}
+              <div className="border-t-4 border-economist-red pt-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-economist-red mb-4">Most Read</h3>
+                <ol className="space-y-4">
+                  {articles.slice(0, 5).map((article, index) => (
+                    <li key={article.id} className="flex gap-3">
+                      <span className="text-4xl font-serif font-bold text-gray-200 leading-none">{index + 1}</span>
+                      <a
+                        href={`/articles/${article.slug}`}
+                        className="text-sm font-serif leading-tight hover:text-economist-red transition-colors"
+                      >
                         {article.title}
                       </a>
                     </li>
                   ))}
-                </ul>
+                </ol>
+              </div>
+
+              {/* Newsletter */}
+              <div className="border-t-4 border-gray-300 pt-4">
+                <h3 className="text-xs font-bold uppercase tracking-wider mb-4">Newsletter</h3>
+                <p className="text-sm text-gray-700 mb-4 leading-relaxed">
+                  Stay updated with the latest analysis bridging Malaysia and Japan.
+                </p>
+                <div className="space-y-2">
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    className="w-full px-3 py-2 border border-gray-400 text-sm focus:outline-none focus:border-economist-red"
+                  />
+                  <button className="w-full bg-economist-red text-white px-4 py-2 text-sm font-bold uppercase hover:bg-red-700 transition-colors">
+                    Subscribe
+                  </button>
+                </div>
+              </div>
+
+              {/* Advertisement */}
+              <div className="border-t-4 border-gray-300 pt-4">
+                <SidebarAd ad={sidebarAd} />
               </div>
             </div>
           </div>
