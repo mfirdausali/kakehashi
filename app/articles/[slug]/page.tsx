@@ -44,54 +44,60 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
   return (
     <main className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <article className="lg:col-span-3 max-w-4xl">
-          <div className="mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Main Article Content */}
+        <article className="lg:col-span-2">
+          {/* The Economist Style: Centered Headline with Air */}
+          <div className="text-center mb-10 pb-8 border-b-4 border-economist-red">
             <Link
               href={`/categories/${article.category}`}
-              className="text-red-700 uppercase text-sm font-bold tracking-wider"
+              className="text-xs font-bold uppercase tracking-wider text-economist-red hover:underline inline-block mb-4"
             >
               {article.category}
             </Link>
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mt-2 mb-4 text-gray-900">{article.title}</h1>
-            <p className="text-xl text-gray-600 mb-6 font-serif">{article.excerpt}</p>
-            <div className="flex items-center text-sm text-gray-500 mb-8">
-              <span>By {article.author}</span>
-              <span className="mx-2">|</span>
+            <h1 className="text-3xl md:text-5xl font-serif font-bold mb-6 text-gray-900 leading-tight">
+              {article.title}
+            </h1>
+            <p className="text-lg text-gray-700 mb-6 font-serif leading-relaxed max-w-3xl mx-auto">{article.excerpt}</p>
+            <div className="flex items-center justify-center gap-4 text-xs text-gray-500 uppercase tracking-wide">
               <time dateTime={article.date}>{formatDate(article.date)}</time>
               {article.premium && (
-                <>
-                  <span className="mx-2">|</span>
-                  <span className="bg-red-100 text-red-700 px-2 py-0.5 rounded-full text-xs font-medium">Premium</span>
-                </>
+                <span className="bg-economist-red text-white px-2 py-1 font-bold uppercase">Premium</span>
               )}
             </div>
           </div>
 
           {article.image && (
-            <div className="mb-8 relative aspect-video">
-              <Image
-                src={article.image || "/placeholder.svg"}
-                alt={article.title}
-                fill
-                className="object-cover"
-                priority
-              />
-              {article.imageCaption && <p className="text-sm text-gray-500 mt-2 italic">{article.imageCaption}</p>}
+            <div className="mb-10">
+              <div className="relative aspect-video">
+                <Image
+                  src={article.image || "/placeholder.svg"}
+                  alt={article.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              {article.imageCaption && (
+                <p className="text-xs text-gray-600 mt-2 italic border-l-2 border-gray-300 pl-3">
+                  {article.imageCaption}
+                </p>
+              )}
             </div>
           )}
 
+          {/* Article Content */}
           {hasAccess ? (
-            <div className="prose prose-lg max-w-none font-serif">
+            <div className="article-content">
               {article.content.split("\n\n").map((paragraph, index) => (
                 <>
-                  <p key={index} className="mb-6">
+                  <p key={index} className="text-base md:text-lg font-serif leading-relaxed text-gray-800 mb-6">
                     {paragraph}
                   </p>
 
                   {/* In-article advertisement after the 2nd paragraph */}
                   {index === 1 && (
-                    <div className="my-8">
+                    <div className="my-10 py-6 border-y border-gray-300">
                       <AdvertisementBanner
                         id="3"
                         imageUrl="/placeholder.svg?height=250&width=728"
@@ -107,33 +113,51 @@ export default async function ArticlePage({ params }: { params: { slug: string }
           ) : (
             <ArticlePaywall title={article.title} excerpt={article.excerpt} previewContent={article.content} />
           )}
+
+          {/* End Mark - The Economist Signature */}
+          {hasAccess && (
+            <div className="mt-8 pt-8 border-t border-gray-300">
+              <div className="w-3 h-3 bg-economist-red" />
+            </div>
+          )}
         </article>
 
-        {/* Sidebar with advertisement */}
+        {/* Sidebar */}
         <div className="lg:col-span-1">
-          <div className="sticky top-4">
-            <AdvertisementBanner
-              id="2"
-              imageUrl="/placeholder.svg?height=600&width=300"
-              altText="Japan Tourism Board"
-              linkUrl="https://example.com/japan-tourism"
-              position="sidebar"
-            />
-
-            <div className="bg-gray-50 p-4 rounded-lg mt-6">
-              <h3 className="font-serif font-bold mb-4">Related Articles</h3>
-              <ul className="space-y-4">
+          <div className="sticky top-4 space-y-8">
+            {/* Related Articles - The Economist Style */}
+            <div className="border-t-4 border-economist-red pt-4">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-economist-red mb-6">Related</h3>
+              <div className="space-y-6">
                 {articles
                   .filter((a) => a.category === article.category && a.slug !== article.slug)
                   .slice(0, 3)
                   .map((relatedArticle) => (
-                    <li key={relatedArticle.id}>
-                      <a href={`/articles/${relatedArticle.slug}`} className="text-sm hover:text-red-700">
+                    <Link
+                      key={relatedArticle.id}
+                      href={`/articles/${relatedArticle.slug}`}
+                      className="block pb-6 border-b border-gray-300 last:border-b-0 group"
+                    >
+                      <h4 className="font-serif font-bold text-base leading-tight mb-2 group-hover:text-economist-red transition-colors">
                         {relatedArticle.title}
-                      </a>
-                    </li>
+                      </h4>
+                      <time className="text-xs text-gray-500 uppercase tracking-wide">
+                        {formatDate(relatedArticle.date)}
+                      </time>
+                    </Link>
                   ))}
-              </ul>
+              </div>
+            </div>
+
+            {/* Advertisement */}
+            <div className="border-t-4 border-gray-300 pt-4">
+              <AdvertisementBanner
+                id="2"
+                imageUrl="/placeholder.svg?height=600&width=300"
+                altText="Japan Tourism Board"
+                linkUrl="https://example.com/japan-tourism"
+                position="sidebar"
+              />
             </div>
           </div>
         </div>
